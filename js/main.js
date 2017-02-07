@@ -1,7 +1,10 @@
 //Javescript load
 //
 function initialize(){
+    //function call to cities()
     cities();
+    //function call to debugAjax()
+    debugAjax();
 };
 function cities(){
     //object to help cities and populations
@@ -76,7 +79,7 @@ function addColumns(cityObj){
 
     		var citySize;
             var cityKey = cityArray[i-1]
-            
+
             //cities less than 100000 will be labeled small
     		if (cityObj[cityKey] < 100000){
     			citySize = 'Small';
@@ -101,12 +104,12 @@ function addEvents(){
 	$('table').mouseover(function(){
         //assign color to variable rgb
 		var color = "rgb(";
-       
+
         //loop to assign new css color to table when mouseover
 		for (var i=0; i<3; i++){
             //assign random to a randome variable between 0 and 255
 			var random = Math.round(Math.random() * 255);
-            
+
 			color += random;
             //the else statement keeps running and only one value in rgb()
 			if (i<2){
@@ -122,17 +125,40 @@ function addEvents(){
     });
     //calls function clickme()
     clickme()
-    
+
 	};
 
 	//function to add an alert when the table is clicked
     function clickme(){
         //alert when the table is clicked
-		alert('Hey, you clicked me!');
-	;
+		    alert('Hey, you clicked me!');
+	      ;
 
-	$('table').on('click', clickme);
+	       $('table').on('click', clickme);
+
     };
+//start ajax debug here
+//function to open map.geojson
+  function debugAjax(){
+      //use ajax and jQuery to open map.geojson
+    	$.ajax("data/map.geojson", {
+        //datatype of file is geojson
+    		dataType: "JSON",
+        //if map.geojson is opened, jQueryCallback function is called
+    		"success": jQueryCallback
+      });
+      console.log(data)
+    };
+    //function to write text of map.geojson
+    function jQueryCallback(data){
+      console.log(data)
+      //assign my data to 'GeoJSON data:' with a new line break
+      var mydata = '<br>GeoJSON data:</br>';
+      //add the variable to the string text of map.geojson
+      mydata += JSON.stringify(data);
+      //appends the script to add the text to the page
+      $('#mydiv').append('<p>'+mydata+'</p>')
 
+    };
 //when the page loads, all the functions run
 window.onload = initialize();
